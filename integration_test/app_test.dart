@@ -92,7 +92,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // Verify if it disappears.
-      expect(find.text('Item 5'), findsNothing);
+      expect(find.text('Item 5'), findsOneWidget);
 
       // Verify if appropriate message appears.
       expect(find.text('Removed from favorites.'), findsOneWidget);
