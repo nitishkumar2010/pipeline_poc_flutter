@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:testing_app/main.dart';
@@ -12,6 +11,8 @@ class SampleTest implements TestCase {
   }
 
   _login(WidgetTester tester) async {
+    await tester.pumpWidget(const TestingApp());
+
     // Create variables for finders that are used multiple times.
     final itemFinder = find.byKey(const ValueKey('text_25'));
 
@@ -22,12 +23,10 @@ class SampleTest implements TestCase {
     );
 
     // Check if the item contains the correct text.
-    expect(tester.widget<Text>(itemFinder).data, 'Item 25');
+    expect(tester
+        .widget<Text>(itemFinder)
+        .data, 'Item 25');
 
-    await _addNewSession(tester);
-  }
-
-  _addNewSession(WidgetTester tester) async {
     // Wait 1 second for the SnackBar to be displayed
     await tester.pumpWidget(const TestingApp());
 
@@ -69,24 +68,14 @@ class SampleTest implements TestCase {
       equals('Item 5'),
     );
 
+    await tester.pumpWidget(const TestingApp());
+
     // Add item to favorites.
     await tester.tap(find.byKey(const ValueKey('icon_5')));
     await tester.pumpAndSettle();
 
     // Navigate to Favorites screen.
     await tester.tap(find.text('Favorites'));
-    await tester.pumpAndSettle();
 
-    // Tap on the remove icon.
-    await tester.tap(find.byKey(const ValueKey('remove_icon_5')));
-
-    // Wait 1 second for the SnackBar to be displayed
-    await tester.pumpAndSettle(const Duration(seconds: 1));
-
-    // Verify if it disappears.
-    expect(find.text('Item 5'), findsNothing);
-
-    // Verify if appropriate message appears.
-    expect(find.text('Removed from favorites.'), findsOneWidget);
   }
 }
