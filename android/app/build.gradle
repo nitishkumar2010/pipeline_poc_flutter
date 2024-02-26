@@ -58,6 +58,13 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    task runIntegrationTests(type: Exec) {
+        commandLine 'flutter', 'test', 'integration_test/app_test.dart', 'integration_test/stage_mgmt_test.dart'
+    }
+
+    // Ensure that assembleDebug depends on runIntegrationTests
+    assembleDebug.dependsOn runIntegrationTests
 }
 
 flutter {
