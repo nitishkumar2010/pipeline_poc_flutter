@@ -92,7 +92,61 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // Verify if it disappears.
-      expect(find.text('Item 5'), findsOneWidget);
+      expect(find.text('Item 5'), findsNothing);
+
+      // Verify if appropriate message appears.
+      expect(find.text('Removed from favorites.'), findsOneWidget);
+    });
+  });
+
+  group('Testing App Driver Tests', () {
+    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+    testWidgets('Verifying whether item gets added to favorites',
+            (tester) async {
+          await tester.pumpWidget(const TestingApp());
+
+          // Add item to favorites.
+          await tester.tap(find.byKey(const ValueKey('icon_5')));
+          await tester.pumpAndSettle();
+
+          // Tap on the favorites button on the AppBar.
+          // The Favorites List should appear.
+          await tester.tap(find.text('Favorites'));
+          await tester.pumpAndSettle();
+
+          // Check if the added item has appeared in the list.
+          expect(
+            tester
+                .widget<Text>(find.byKey(const ValueKey('favorites_text_5')))
+                .data,
+            equals('Item 5'),
+          );
+        });
+  });
+
+  group('Testing App Driver Tests', () {
+    IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+    testWidgets('Testing remove button', (tester) async {
+      await tester.pumpWidget(const TestingApp());
+
+      // Add item to favorites.
+      await tester.tap(find.byKey(const ValueKey('icon_5')));
+      await tester.pumpAndSettle();
+
+      // Navigate to Favorites screen.
+      await tester.tap(find.text('Favorites'));
+      await tester.pumpAndSettle();
+
+      // Tap on the remove icon.
+      await tester.tap(find.byKey(const ValueKey('remove_icon_5')));
+
+      // Wait 1 second for the SnackBar to be displayed
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
+      // Verify if it disappears.
+      expect(find.text('Item 5'), findsNothing);
 
       // Verify if appropriate message appears.
       expect(find.text('Removed from favorites.'), findsOneWidget);
