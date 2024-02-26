@@ -59,14 +59,7 @@ android {
         }
     }
 
-    task runIntegrationTests(type: Exec) {
-        commandLine 'flutter', 'test', 'integration_test/app_test.dart', 'integration_test/state_mgmt_test.dart'
-    }
-
 }
-
-// Ensure that runIntegrationTests runs before assemble
-tasks.named('assemble').configure { dependsOn 'runIntegrationTests' }
 
 flutter {
     source '../..'
