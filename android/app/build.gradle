@@ -60,12 +60,13 @@ android {
     }
 
     task runIntegrationTests(type: Exec) {
-        commandLine 'flutter', 'test', 'integration_test/app_test.dart', 'integration_test/stage_mgmt_test.dart'
+        commandLine 'flutter', 'test', 'integration_test/first_test.dart', 'integration_test/second_test.dart'
     }
 
-    // Ensure that assembleDebug depends on runIntegrationTests
-    assembleDebug.dependsOn runIntegrationTests
 }
+
+// Ensure that runIntegrationTests runs before assemble
+tasks.named('assemble').configure { dependsOn 'runIntegrationTests' }
 
 flutter {
     source '../..'
